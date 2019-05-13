@@ -124,6 +124,19 @@ router.put('/:table/:id', (req, res) => {
         return;
     }
     let table = JSON.parse(fs.readFileSync(tableFile));
+    if(+req.params.id === -1){
+        let maxId = 0;
+        table.forEach((value, index) => {
+            if (+value.id > maxId) {
+                maxId = +value.id;
+            }
+        });
+        req.body.id = maxId + 1;
+        table[maxId] = req.body;
+        fs.writeFileSync(tableFile, JSON.stringify(table));
+        res.status(200).send(req.body);
+        return;
+    }
     let found = false;
     table.forEach((value, index) => {
         if (+value.id === +req.params['id']) {
@@ -151,8 +164,20 @@ router.post('/:table/new', (req, res) => {
             maxId = +value.id;
         }
     });
-    table[maxId] = {id: maxId + 1};
+    table[maxId] = {id: maxId + 1, status: "New"};
     fs.writeFileSync(tableFile, JSON.stringify(table));
     res.status(201).send((maxId + 1).toString());
+});
+
+router.delete('/:table/:id', (req, res) => {
+    let tableFile = 'data/' + req.params['table'] + '.json';
+    if (!fs.existsSync(tableFile)) {
+        res.send(404).send('Table not found\n');
+        return;
+    }
+    let table = JSON.parse(fs.readFileSync(tableFile));
+    let newtable = table.filter(value => +value.id !== +req.params['id']);
+    fs.writeFileSync(tableFile, JSON.stringify(newtable));
+    res.status(204).end();
 });
 module.exports = router;
