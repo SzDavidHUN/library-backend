@@ -39,18 +39,18 @@ router.get('/:table/:attr/:val', (req, res) => {
     let found = false;
     let table = JSON.parse(fs.readFileSync(tableFile));
     Object.keys(table[0]).forEach((property) => {
-        if(property === req.params['attr']){
+        if (property === req.params['attr']) {
             found = true;
-            return;
+
         }
     });
-    if(!found){
+    if (!found) {
         res.status(404).send('Couldn\'t find property');
         return;
     }
     found = false;
     table.forEach((value) => {
-        if(found){
+        if (found) {
             return;
         }
         if (value[req.params['attr']].toString() === req.params['val'].toString()) {
@@ -72,12 +72,12 @@ router.get('/:table/all/:attr/:val', (req, res) => {
     let found = false;
     let table = JSON.parse(fs.readFileSync(tableFile));
     Object.keys(table[0]).forEach((property) => {
-        if(property === req.params['attr']){
+        if (property === req.params['attr']) {
             found = true;
-            return;
+
         }
     });
-    if(!found){
+    if (!found) {
         res.status(404).send('Couldn\'t find property');
         return;
     }
@@ -112,7 +112,7 @@ router.put('/:table', (req, res) => {
             found = true;
         }
     });
-    if(!found){
+    if (!found) {
         res.status(404).send('ID couldn\'t be found\n');
     }
 });
@@ -124,7 +124,7 @@ router.put('/:table/:id', (req, res) => {
         return;
     }
     let table = JSON.parse(fs.readFileSync(tableFile));
-    if(+req.params.id === -1){
+    if (+req.params.id === -1) {
         let maxId = 0;
         table.forEach((value, index) => {
             if (+value.id > maxId) {
@@ -146,7 +146,7 @@ router.put('/:table/:id', (req, res) => {
             found = true;
         }
     });
-    if(!found){
+    if (!found) {
         res.status(404).send('ID couldn\'t be found\n');
     }
 });
