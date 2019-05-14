@@ -82,7 +82,7 @@ router.get('/:table/all/:attr/:val', (req, res) => {
         return;
     }
     found = false;
-    var result = [];
+    let result = [];
     table.forEach((value) => {
         if (value[req.params['attr']].toString() === req.params['val'].toString()) {
             result.push(value);
@@ -126,7 +126,7 @@ router.put('/:table/:id', (req, res) => {
     let table = JSON.parse(fs.readFileSync(tableFile));
     if (+req.params.id === -1) {
         let maxId = 0;
-        table.forEach((value, index) => {
+        table.forEach((value) => {
             if (+value.id > maxId) {
                 maxId = +value.id;
             }
@@ -159,7 +159,7 @@ router.post('/:table/new', (req, res) => {
     }
     let maxId = 0;
     let table = JSON.parse(fs.readFileSync(tableFile));
-    table.forEach((value, index) => {
+    table.forEach((value) => {
         if (+value.id > maxId) {
             maxId = +value.id;
         }
